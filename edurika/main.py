@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import FastAPI
 
 app = FastAPI(
@@ -6,5 +8,5 @@ app = FastAPI(
 
 
 @app.get("/")
-def read_root() -> dict:
+def read_root() -> dict[str, Any]:
     return {"Hello": "World"}

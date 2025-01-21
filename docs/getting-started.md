@@ -37,7 +37,6 @@ ruff check path/to/code/*.py        # Lint all `.py` files in `/path/to/code`.
 ruff check path/to/code/to/file.py  # Lint `file.py`
 ```
 
-
 Run Ruff as a formatter
 ```
 ruff format                          # Format all files in the current directory (and any subdirectories).
@@ -45,4 +44,10 @@ ruff format path/to/code/            # Format all files in `/path/to/code` (and 
 ruff format path/to/code/*.py        # Format all `.py` files in `/path/to/code`.
 ruff format path/to/code/to/file.py  # Format `file.py`.
 ruff format @arguments.txt           # Format using an input file, treating its contents as newline-delimited command-line arguments
+```
+
+To lint and check types with mypy
+
+```bash
+mypy .
 ```
