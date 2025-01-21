@@ -71,3 +71,12 @@ warn_unused_ignores = true
 warn_unused_configs = true
 warn_unreachable = true
 exclude = "venv"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = [
+    "tests",
+]
+python_files = [
+  "test_*.py"
+]

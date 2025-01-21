@@ -51,3 +51,11 @@ To lint and check types with mypy
 ```bash
 mypy .
 ```
+
+Run tests
+
+```bash
+pytest
+pytest tests/local
+pytest tests/local/test_main.py
+```
