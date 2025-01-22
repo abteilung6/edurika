@@ -59,3 +59,15 @@ pytest
 pytest tests/local
 pytest tests/local/test_main.py
 ```
+
+## Database
+
+Create new migration
+```
+alembic revision --autogenerate -m "Initial migration"
+```
+
+Apply latest migrations
+```
+alembic upgrade head
+```
