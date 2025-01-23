@@ -44,3 +44,7 @@ venv.bak/
 dmypy.json
 # Ruff stuff:
 .ruff_cache/
+
+
+# sqlalchemy
+*.db
