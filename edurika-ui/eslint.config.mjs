@@ -25,6 +25,7 @@ export default [...compat.extends(
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "plugin:tailwindcss/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
 ), {
     plugins: {
         react,

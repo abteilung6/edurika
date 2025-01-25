@@ -27,6 +27,7 @@
   "devDependencies": {
     "@eslint/compat": "^1.2.5",
     "@openapitools/openapi-generator-cli": "^2.16.2",
+    "@tanstack/eslint-plugin-query": "^5.64.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@types/node": "^22.10.10",
