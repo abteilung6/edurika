@@ -1,12 +1,3 @@
-from typing import Any
+from edurika.app import get_application
 
-from fastapi import FastAPI
-
-app = FastAPI(
-    title="Edurika API",
-)
-
-
-@app.get("/")
-def read_root() -> dict[str, Any]:
-    return {"Hello": "World"}
+app = get_application()

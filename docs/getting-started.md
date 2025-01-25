@@ -21,6 +21,11 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
+Set environment variables
+```
+export EDURIKA_JWT_SECRET_KEY="changeme"
+```
+
 Run the application
 
 ```bash
