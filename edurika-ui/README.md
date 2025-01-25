@@ -14,6 +14,14 @@ Serve with hot reload
 npm run dev
 ```
 
+### Generate
+
+Generate openapi client
+
+```bash
+npm run generate-openapi-client
+```
+
 ### Lint
 
 ```bash
@@ -43,3 +51,4 @@ View and interact with your tests via UI.
 ```bash
 npm run test:ui
 ```
+
