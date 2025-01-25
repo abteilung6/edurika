@@ -12,8 +12,8 @@ from edurika import models
 from edurika.api.deps import get_db, get_jwt_manager
 from edurika.app import get_application
 from edurika.models.base import Base as DBBase
-from edurika.utils.password_hashing import pwd_context
 from edurika.utils.jwt import JwtManager, JwtPayload
+from edurika.utils.password_hashing import pwd_context
 
 SQLALCHEMY_DATABASE_URL = os.getenv("TEST_DATABASE_URL", "sqlite:///test-dummy.db")
 
