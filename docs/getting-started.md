@@ -21,6 +21,11 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
+Set environment variables
+```
+export EDURIKA_JWT_SECRET_KEY="changeme"
+```
+
 Run the application
 
 ```bash
@@ -58,4 +63,16 @@ Run tests
 pytest
 pytest tests/local
 pytest tests/local/test_main.py
+```
+
+## Database
+
+Create new migration
+```
+alembic revision --autogenerate -m "Initial migration"
+```
+
+Apply latest migrations
+```
+alembic upgrade head
 ```
