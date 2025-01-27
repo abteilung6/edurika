@@ -31,9 +31,9 @@ class SignUpRequest(BaseModel):
     email: EmailStr
     password: str = PasswordField
     username: str = UsernameField
-    public_name: str = Field(..., min_length=8, max_length=32)
-    subtitle: str | None = Field(None, min_length=8, max_length=128)
-    description: str | None = Field(None, min_length=8, max_length=1024)
+    public_name: str = Field(..., min_length=4, max_length=32)
+    subtitle: str | None = Field(None, min_length=4, max_length=128)
+    description: str | None = Field(None, min_length=4, max_length=1024)
 
     @field_validator("password", mode="after")
     @classmethod

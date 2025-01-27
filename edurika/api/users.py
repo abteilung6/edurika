@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from edurika import models, schemas
 from edurika.api.deps import get_current_user, get_db, get_jwt_manager
 from edurika.crud.users import user_create, user_get, user_get_by_username_or_email
-from edurika.utils.password_hashing import hash_password, verify_password
 from edurika.utils.jwt import JwtManager, JwtPayload
+from edurika.utils.password_hashing import hash_password, verify_password
 
 router = APIRouter(prefix="/users", tags=["users"])
 

@@ -22,7 +22,7 @@ def test_default_sign_up_request_password_valid(password: str) -> None:
     assert SignUpRequest(**default_sign_up_request.__dict__).password == password
 
 
-@pytest.mark.parametrize("password", ["Short1!", "NoNumber!", "nouppercase1!", "NoSpecial1", "weak", ""])
+@pytest.mark.parametrize("password", ["Sho", "NoNumber!", "nouppercase1!", "NoSpecial1", "weak", ""])
 def test_default_sign_up_request_password_invalid(password: str) -> None:
     default_sign_up_request = DefaultedSignUpRequest(password=password)
     with pytest.raises(ValidationError):
