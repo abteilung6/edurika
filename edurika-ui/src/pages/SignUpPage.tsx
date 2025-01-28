@@ -1,4 +1,4 @@
-import { useSignInMutation } from 'api/users'
+import { useSignUpMutation } from 'api/users'
 import { Alert } from 'components/Alert'
 import { Button } from 'components/Button'
 import { TextInput } from 'components/TextInput'
@@ -16,7 +16,7 @@ const schema = Yup.object({
 })
 
 const SignUpPage: React.FC = () => {
-  const signInMutation = useSignInMutation()
+  const signUpMutation = useSignUpMutation()
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -26,7 +26,7 @@ const SignUpPage: React.FC = () => {
     },
     validationSchema: schema,
     onSubmit: ({ username, email, password, public_name }) => {
-      return signInMutation
+      return signUpMutation
         .mutateAsync({
           username,
           password,
@@ -50,9 +50,9 @@ const SignUpPage: React.FC = () => {
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        {signInMutation.isError && (
+        {signUpMutation.isError && (
           <div className="mb-4">
-            <Alert title="Error" description={signInMutation.error.message} />
+            <Alert title="Error" description={signUpMutation.error.message} />
           </div>
         )}
         <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -121,7 +121,7 @@ const SignUpPage: React.FC = () => {
               type="submit"
               fullWidth
               disabled={
-                signInMutation.isPending || !formik.isValid || !formik.dirty
+                signUpMutation.isPending || !formik.isValid || !formik.dirty
               }
             >
               Sign up now
