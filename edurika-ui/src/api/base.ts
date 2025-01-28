@@ -36,9 +36,14 @@ const parseErrorMessage = (error: AxiosError) => {
   if (errorResponse) {
     const data = errorResponse.data
     if (typeof data === 'object' && data != null && 'detail' in data) {
-      const details = data.detail as ValidationError[]
-      for (const detail of details) {
-        return detail.msg
+      const details = data.detail
+      if (typeof details === 'string') {
+        return details
+      }
+      if (Array.isArray(details)) {
+        for (const detail of details as ValidationError[]) {
+          return detail.msg
+        }
       }
     }
   }
