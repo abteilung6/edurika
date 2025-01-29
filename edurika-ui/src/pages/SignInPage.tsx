@@ -1,8 +1,8 @@
-import { useSignInMutation } from 'api/users'
 import { Alert } from 'components/Alert'
 import { Button } from 'components/Button'
 import { TextInput } from 'components/TextInput'
 import { useFormik } from 'formik'
+import { useAuthentication } from 'hooks/useAuthentication'
 import { noop } from 'utils/common'
 import * as Yup from 'yup'
 
@@ -12,7 +12,11 @@ const schema = Yup.object({
 })
 
 const SignInPage: React.FC = () => {
-  const signInMutation = useSignInMutation()
+  const {
+    login,
+    loading: isLoginLoading,
+    error: loginError
+  } = useAuthentication()
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -22,12 +26,13 @@ const SignInPage: React.FC = () => {
     },
     validationSchema: schema,
     onSubmit: ({ username, password }) => {
-      return signInMutation
-        .mutateAsync({
+      return login(
+        {
           username,
           password
-        })
-        .catch(noop)
+        },
+        '/'
+      ).catch(noop)
     }
   })
 
@@ -44,9 +49,9 @@ const SignInPage: React.FC = () => {
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        {signInMutation.isError && (
+        {loginError && (
           <div className="mb-4">
-            <Alert title="Error" description={signInMutation.error.message} />
+            <Alert title="Error" description={loginError.message} />
           </div>
         )}
         <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -85,9 +90,7 @@ const SignInPage: React.FC = () => {
             <Button
               type="submit"
               fullWidth
-              disabled={
-                signInMutation.isPending || !formik.isValid || !formik.dirty
-              }
+              disabled={isLoginLoading || !formik.isValid || !formik.dirty}
             >
               Sign in
             </Button>

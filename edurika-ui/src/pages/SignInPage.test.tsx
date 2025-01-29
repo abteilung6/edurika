@@ -7,7 +7,7 @@ import { createTestUtils } from 'utils/testUtils'
 import { mockAxiosErrorResponse, mockAxiosResponse } from 'utils/mocks/axios'
 
 describe(SignInPage.name, () => {
-  const { render } = createTestUtils()
+  const { render } = createTestUtils({ layout: 'authLayout' })
   const user = userEvent.setup()
 
   beforeEach(() => {
@@ -40,7 +40,8 @@ describe(SignInPage.name, () => {
   })
 
   test('should submit form', async () => {
-    const spyUserRegister = vi
+    const setItemSpy = vi.spyOn(localStorage, 'setItem')
+    const spyUserLogin = vi
       .spyOn(api.usersApi, 'usersLoginUsersLoginPost')
       .mockResolvedValue(
         mockAxiosResponse({
@@ -54,14 +55,13 @@ describe(SignInPage.name, () => {
     const button = screen.getByRole('button', { name: 'Sign in' })
     expect(screen.getByRole('button', { name: 'Sign in' })).toBeEnabled()
     await user.click(button)
-    expect(spyUserRegister).toHaveBeenCalledWith(
-      'fake-username',
-      'fake-password'
-    )
+    expect(spyUserLogin).toHaveBeenCalledWith('fake-username', 'fake-password')
+    expect(setItemSpy).toHaveBeenCalledWith('accessToken', expect.any(String))
   })
 
   it('should render alert when submit fails', async () => {
-    const spyUserRegister = vi
+    const setRemoveSpy = vi.spyOn(localStorage, 'removeItem')
+    const spyUserLogin = vi
       .spyOn(api.usersApi, 'usersLoginUsersLoginPost')
       .mockRejectedValue(
         mockAxiosErrorResponse({
@@ -72,6 +72,7 @@ describe(SignInPage.name, () => {
     await setFormFields({})
     await user.click(screen.getByRole('button', { name: 'Sign in' }))
     within(screen.getByRole('alert')).getByText(/Something went wrong/)
-    expect(spyUserRegister).toHaveBeenCalledOnce()
+    expect(spyUserLogin).toHaveBeenCalledOnce()
+    expect(setRemoveSpy).toHaveBeenCalledOnce()
   })
 })

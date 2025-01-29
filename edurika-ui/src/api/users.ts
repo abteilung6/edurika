@@ -1,6 +1,16 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query'
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  UseQueryOptions
+} from '@tanstack/react-query'
 import api from 'api/base'
-import { SignInResponse, SignUpRequest, SignUpResponse } from 'generated-api'
+import {
+  SignInResponse,
+  SignUpRequest,
+  SignUpResponse,
+  User
+} from 'generated-api'
 
 export const useSignUpMutation = (
   options?: Omit<
@@ -35,6 +45,19 @@ export const useSignInMutation = (
         signInRequest.username,
         signInRequest.password
       )
+      return data
+    },
+    ...options
+  })
+}
+
+export function useCurrentUser(
+  options?: Omit<UseQueryOptions<User>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery<User>({
+    queryKey: ['me'],
+    queryFn: async () => {
+      const { data } = await api.usersApi.usersMeUsersMeGet()
       return data
     },
     ...options
