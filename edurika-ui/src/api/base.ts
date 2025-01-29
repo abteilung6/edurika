@@ -1,12 +1,22 @@
 import axios, { AxiosError } from 'axios'
 import { Configuration, UsersApi, ValidationError } from 'generated-api'
+import { isTokenValid } from 'hooks/useAuthentication'
 
 const buildAxiosInstance = () => {
   const EDURIKA_API_BASE_URL = 'http://127.0.0.1:8000'
   const axiosInstance = axios.create({
     baseURL: EDURIKA_API_BASE_URL
   })
+  axiosInstance.interceptors.request.use((config) => {
+    const accessToken = localStorage.getItem('accessToken')
+    if (accessToken && isTokenValid(accessToken)) {
+      config.headers?.set?.('Authorization', `Bearer ${accessToken}`, true)
+    } else {
+      config.headers?.delete?.('Authorization')
+    }
 
+    return config
+  })
   axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -36,9 +46,14 @@ const parseErrorMessage = (error: AxiosError) => {
   if (errorResponse) {
     const data = errorResponse.data
     if (typeof data === 'object' && data != null && 'detail' in data) {
-      const details = data.detail as ValidationError[]
-      for (const detail of details) {
-        return detail.msg
+      const details = data.detail
+      if (typeof details === 'string') {
+        return details
+      }
+      if (Array.isArray(details)) {
+        for (const detail of details as ValidationError[]) {
+          return detail.msg
+        }
       }
     }
   }

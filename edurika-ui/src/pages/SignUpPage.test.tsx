@@ -8,7 +8,7 @@ import { mockAxiosErrorResponse, mockAxiosResponse } from 'utils/mocks/axios'
 import { createMockUser } from 'utils/mocks/api'
 
 describe(SignUpPage.name, () => {
-  const { render } = createTestUtils()
+  const { render } = createTestUtils({ layout: 'authLayout' })
   const user = userEvent.setup()
 
   beforeEach(() => {

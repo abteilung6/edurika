@@ -69,7 +69,7 @@ def test_sign_in_with_invalid_credentials(client: TestClient, auth_user: models.
         data={"username": auth_user.username, "password": "wrong_password"},
     )
     assert response.status_code == 401
-    assert response.json()["detail"] == "Invalid email or password"
+    assert response.json()["detail"] == "Invalid username or password"
 
 
 def test_sign_in_with_nonexistent_user(client: TestClient, auth_user: models.User) -> None:
@@ -78,7 +78,7 @@ def test_sign_in_with_nonexistent_user(client: TestClient, auth_user: models.Use
         data={"username": "nonexistentuser", "password": "wrong_password"},
     )
     assert response.status_code == 401
-    assert response.json()["detail"] == "Invalid email or password"
+    assert response.json()["detail"] == "Invalid username or password"
 
 
 def test_user_me(auth_client: TestClient, auth_user: models.User) -> None:

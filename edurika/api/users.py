@@ -47,14 +47,14 @@ def users_login(
     if (user := user_get(db, username=sign_in_request.username)) is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password",
+            detail="Invalid username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
     if not verify_password(sign_in_request.password, str(user.hashed_password)):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password",
+            detail="Invalid username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = jwt_manager.create_access_token(payload=JwtPayload(sub=str(user.username)))
