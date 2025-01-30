@@ -1,13 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edurika</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta property="og:title" content="Edurika – Die Plattform für Lehrer" />
+  <meta property="og:description"
+    content="Verkaufe und kaufe Unterrichtsmaterialien von Lehrern für Lehrer. Einfach. Schnell. Sicher." />
+  <meta property="og:image" content="https://www.edurika.de/preview.jpg" />
+  <meta property="og:url" content="https://www.edurika.de" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Verkaufe und kaufe digitale Unterrichtsmaterialien auf Edurika. Verdiene Geld mit deinen Materialien & entdecke neue Ressourcen für deinen Unterricht!">
+  <title>Edurika – Unterrichtsmaterialien kaufen & verkaufen</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Edurika",
+    "url": "https://www.edurika.de",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.edurika.de/suche?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+</script>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Was ist Edurika?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Edurika ist eine Plattform, auf der Lehrer Unterrichtsmaterialien kaufen und verkaufen können."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Wie kann ich meine Materialien verkaufen?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Registriere dich, lade dein Material hoch, lege einen Preis fest und verdiene Geld mit jedem Verkauf."
+        }
+      }
+    ]
+  }
+</script>
 </html>
