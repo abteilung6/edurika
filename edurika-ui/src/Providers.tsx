@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import AuthLayout from 'components/AuthLayout'
 import MainLayout from 'components/MainLayout'
 import { AuthenticationProvider } from 'hooks/useAuthentication'
+import MarketingPage from 'pages/marketing/MarketingPage'
 import SignInPage from 'pages/SignInPage'
 import SignUpPage from 'pages/SignUpPage'
 import StartPage from 'pages/StartPage'
@@ -39,6 +40,10 @@ const route: RouteObject = {
       children: [
         {
           path: '/',
+          element: <MarketingPage />
+        },
+        {
+          path: '/start',
           element: <StartPage />
         }
       ]
