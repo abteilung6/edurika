@@ -1,6 +1,7 @@
 import os
 from collections.abc import Generator
 from typing import Any
+from unittest.mock import MagicMock
 
 import pytest
 from fastapi import FastAPI
@@ -9,11 +10,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from edurika import models
-from edurika.api.deps import get_db, get_jwt_manager
+from edurika.api.deps import get_db, get_jwt_manager, get_settings, get_shopify_operator
 from edurika.app import get_application
+from edurika.config import Settings
 from edurika.models.base import Base as DBBase
+from edurika.prj.shopify.operator import ShopifyOperator
 from edurika.utils.jwt import JwtManager, JwtPayload
 from edurika.utils.password_hashing import pwd_context
+from tests.local.fixtures.shopify import FakeShopifyOperator, fixture_shopify_operator  # noqa: F401
 
 SQLALCHEMY_DATABASE_URL = os.getenv("TEST_DATABASE_URL", "sqlite:///test-dummy.db")
 
@@ -47,12 +51,21 @@ def fixture_jwt_manager() -> JwtManager:
 
 
 @pytest.fixture(name="client")
-def fixture_client(app: FastAPI, db_session: Session, jwt_manager: JwtManager) -> Generator[TestClient, Any, None]:
+def fixture_client(
+    app: FastAPI, db_session: Session, jwt_manager: JwtManager, shopify_operator: FakeShopifyOperator
+) -> Generator[TestClient, Any, None]:
     def _get_test_db() -> Generator[Session, Any, None]:
         try:
             yield db_session
         finally:
             pass
+
+    def _get_settings() -> Generator[Settings, Any, None]:
+        mock_settings = MagicMock(spec_set=Settings)
+        yield mock_settings
+
+    def _get_shopify_operator() -> Generator[ShopifyOperator, Any, None]:
+        yield shopify_operator
 
     def _get_jwt_manager() -> Generator[JwtManager, Any, None]:
         try:
@@ -61,6 +74,8 @@ def fixture_client(app: FastAPI, db_session: Session, jwt_manager: JwtManager) -
             pass
 
     app.dependency_overrides[get_db] = _get_test_db
+    app.dependency_overrides[get_settings] = _get_settings
+    app.dependency_overrides[get_shopify_operator] = _get_shopify_operator
     app.dependency_overrides[get_jwt_manager] = _get_jwt_manager
     with TestClient(app) as client:
         yield client

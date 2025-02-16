@@ -21,9 +21,11 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
-Set environment variables
+Set environment variables. Either file based `.env` or via `export`.
 ```
-export EDURIKA_JWT_SECRET_KEY="changeme"
+EDURIKA_JWT_SECRET_KEY="changeme"
+SHOPIFY_SHOP_ID="changeme"
+SHOPIFY_ACCESS_TOKEN="changeme"
 ```
 
 Run the application
