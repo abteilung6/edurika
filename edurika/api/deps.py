@@ -8,9 +8,10 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from edurika import models
+from edurika.config import Settings, lazy_load_settings
 from edurika.crud.users import user_get
 from edurika.models.base_class import SessionLocal
-from edurika.utils.env import get_jwt_secret_key
+from edurika.prj.shopify.graphql_operator import GraphQLShopifyOperator
 from edurika.utils.jwt import JwtManager
 
 
@@ -25,10 +26,12 @@ def get_db() -> Generator[Session, Any, None]:
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 
 
-def get_jwt_manager() -> JwtManager:
-    secret_key = get_jwt_secret_key()
-    algorithm = "HS256"
-    return JwtManager(secret_key=secret_key, algorithm=algorithm)
+def get_settings() -> Settings:
+    return lazy_load_settings()
+
+
+def get_jwt_manager(settings: Settings = Depends(get_settings)) -> JwtManager:
+    return JwtManager(secret_key=settings.EDURIKA_JWT_SECRET_KEY.get_secret_value(), algorithm="HS256")
 
 
 def get_current_username(
@@ -61,3 +64,9 @@ def get_current_user(username: str = Depends(get_current_username), db: Session 
             detail="Invalid authentication credentials",
         )
     return user
+
+
+def get_shopify_operator(settings: Settings = Depends(get_settings)) -> GraphQLShopifyOperator:
+    return GraphQLShopifyOperator(
+        access_token=settings.SHOPIFY_ACCESS_TOKEN.get_secret_value(), shop_id=settings.SHOPIFY_SHOP_ID
+    )
