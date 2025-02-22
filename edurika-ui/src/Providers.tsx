@@ -3,6 +3,7 @@ import AuthLayout from 'components/AuthLayout'
 import MainLayout from 'components/MainLayout'
 import { AuthenticationProvider } from 'hooks/useAuthentication'
 import MarketingPage from 'pages/marketing/MarketingPage'
+import ProductCreatePage from 'pages/products/ProductCreatePage'
 import SignInPage from 'pages/SignInPage'
 import SignUpPage from 'pages/SignUpPage'
 import StartPage from 'pages/StartPage'
@@ -45,6 +46,10 @@ const route: RouteObject = {
         {
           path: '/start',
           element: <StartPage />
+        },
+        {
+          path: '/product/create',
+          element: <ProductCreatePage />
         }
       ]
     }
