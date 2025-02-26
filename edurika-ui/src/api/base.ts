@@ -1,5 +1,10 @@
 import axios, { AxiosError } from 'axios'
-import { Configuration, UsersApi, ValidationError } from 'generated-api'
+import {
+  Configuration,
+  ProductsApi,
+  UsersApi,
+  ValidationError
+} from 'generated-api'
 import { isTokenValid } from 'hooks/useAuthentication'
 
 const buildAxiosInstance = () => {
@@ -40,6 +45,7 @@ const buildAxiosInstance = () => {
 }
 
 const configuration = new Configuration({})
+const axiosInstance = buildAxiosInstance()
 
 const parseErrorMessage = (error: AxiosError) => {
   const errorResponse = error.response
@@ -61,5 +67,6 @@ const parseErrorMessage = (error: AxiosError) => {
 }
 
 export default {
-  usersApi: new UsersApi(configuration, '', buildAxiosInstance())
+  usersApi: new UsersApi(configuration, '', axiosInstance),
+  productsApi: new ProductsApi(configuration, '', axiosInstance)
 }
