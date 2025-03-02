@@ -1,4 +1,4 @@
-import { User } from 'generated-api'
+import { Product, User } from 'generated-api'
 
 export const createMockUser = (overrides: Partial<User>): User => {
   return {
@@ -8,5 +8,16 @@ export const createMockUser = (overrides: Partial<User>): User => {
     public_name: overrides.public_name ?? 'Test public name',
     subtitle: overrides.subtitle ?? 'Test subtitle',
     description: overrides.description ?? 'Test description'
+  }
+}
+
+export const createMockProduct = (overrides: Partial<Product>): Product => {
+  return {
+    gid: overrides.gid ?? '1',
+    title: overrides.title ?? 'title',
+    description_html: overrides.description_html ?? 'description_html',
+    product_type: overrides.product_type ?? 'product_type',
+    vendor: overrides.vendor ?? 'vendor',
+    tags: overrides.tags ?? ['tag1']
   }
 }
