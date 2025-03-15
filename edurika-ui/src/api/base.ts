@@ -6,9 +6,12 @@ import {
   ValidationError
 } from 'generated-api'
 import { isTokenValid } from 'hooks/useAuthentication'
+import { StoreFrontAPI } from 'utils/shopify/client'
+import { createStorefrontClient } from '@shopify/hydrogen-react'
+import { loadEnv } from 'utils/environment'
 
 const buildAxiosInstance = () => {
-  const EDURIKA_API_BASE_URL = 'http://127.0.0.1:8000'
+  const { EDURIKA_API_BASE_URL } = loadEnv()
   const axiosInstance = axios.create({
     baseURL: EDURIKA_API_BASE_URL
   })
@@ -66,7 +69,29 @@ const parseErrorMessage = (error: AxiosError) => {
   return error.message
 }
 
+export const buildStorefrontClient = () => {
+  const {
+    SHOPIFY_STORE_DOMAIN,
+    SHOPIFY_STOREFRONT_API_VERSION,
+    SHOPIFY_PUBLIC_STOREFRONT_TOKEN
+  } = loadEnv()
+  return createStorefrontClient({
+    storeDomain: SHOPIFY_STORE_DOMAIN,
+    storefrontApiVersion: SHOPIFY_STOREFRONT_API_VERSION,
+    publicStorefrontToken: SHOPIFY_PUBLIC_STOREFRONT_TOKEN
+  })
+}
+
+const getShopifyApi = () => {
+  const storeFrontClient = buildStorefrontClient()
+  return new StoreFrontAPI({
+    storefrontApiUrl: storeFrontClient.getStorefrontApiUrl(),
+    publicTokenHeaders: storeFrontClient.getPublicTokenHeaders()
+  })
+}
+
 export default {
   usersApi: new UsersApi(configuration, '', axiosInstance),
-  productsApi: new ProductsApi(configuration, '', axiosInstance)
+  productsApi: new ProductsApi(configuration, '', axiosInstance),
+  shopifyApi: getShopifyApi()
 }
