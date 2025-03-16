@@ -7,7 +7,7 @@ type EnvConfig = {
 }
 
 export const loadEnv = (): EnvConfig => {
-  // TODO: handle unset variables 
+  // TODO: handle unset variables
   return {
     NODE_ENV: import.meta.env.MODE || 'development',
     EDURIKA_API_BASE_URL: import.meta.env.VITE_EDURIKA_API_BASE_URL || '',
