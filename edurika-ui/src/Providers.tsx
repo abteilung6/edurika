@@ -4,6 +4,7 @@ import MainLayout from 'components/MainLayout'
 import { AuthenticationProvider } from 'hooks/useAuthentication'
 import MarketingPage from 'pages/marketing/MarketingPage'
 import ProductCreatePage from 'pages/products/ProductCreatePage'
+import ProductListPage from 'pages/products/ProductListPage'
 import SignInPage from 'pages/SignInPage'
 import SignUpPage from 'pages/SignUpPage'
 import StartPage from 'pages/StartPage'
@@ -48,8 +49,12 @@ const route: RouteObject = {
           element: <StartPage />
         },
         {
-          path: '/product/create',
+          path: '/products/create',
           element: <ProductCreatePage />
+        },
+        {
+          path: '/products',
+          element: <ProductListPage />
         }
       ]
     }

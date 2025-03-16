@@ -33,6 +33,13 @@ type CreateTestUtilsOptions = {
   layout?: 'mainLayout' | 'authLayout'
 }
 
+const mockEnvironentVariables = () => {
+  import.meta.env.VITE_EDURIKA_API_BASE_URL = ''
+  import.meta.env.VITE_SHOPIFY_STORE_DOMAIN = ''
+  import.meta.env.VITE_SHOPIFY_STOREFRONT_API_VERSION = ''
+  import.meta.env.VITE_SHOPIFY_PUBLIC_STOREFRONT_TOKEN = ''
+}
+
 export const createTestUtils = ({
   layout = 'mainLayout'
 }: CreateTestUtilsOptions = {}) => {
@@ -46,6 +53,7 @@ export const createTestUtils = ({
     })
     const testRoute = getTestRoute({ component, layout })
     const testBrowserRouter = createMemoryRouter([testRoute])
+    mockEnvironentVariables()
     return render(
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={testBrowserRouter} />
