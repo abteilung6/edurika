@@ -8,6 +8,14 @@ Install dependencies.
 npm install
 ```
 
+### Set environent variables
+```
+VITE_EDURIKA_API_BASE_URL=
+VITE_SHOPIFY_STORE_DOMAIN=
+VITE_SHOPIFY_STOREFRONT_API_VERSION=
+VITE_SHOPIFY_PUBLIC_STOREFRONT_TOKEN=
+```
+
 Serve with hot reload
 
 ```bash
