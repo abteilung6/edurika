@@ -43,7 +43,6 @@ export const ProductCreateDrawer: React.FC<ProductCreateDrawerProps> = ({
           title,
           description_html: description,
           product_type: product_type as ProductType,
-          vendor: 'vendor',
           tags: ['tag']
         })
         .then(() => setOpen(false))
