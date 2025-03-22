@@ -1,4 +1,4 @@
-import { Product, User } from 'generated-api'
+import { Product, ProductType, User } from 'generated-api'
 import { ShopifyProduct } from 'utils/shopify/types'
 
 export const createMockUser = (overrides: Partial<User>): User => {
@@ -17,7 +17,7 @@ export const createMockProduct = (overrides: Partial<Product>): Product => {
     gid: overrides.gid ?? '1',
     title: overrides.title ?? 'title',
     description_html: overrides.description_html ?? 'description_html',
-    product_type: overrides.product_type ?? 'product_type',
+    product_type: overrides.product_type ?? ProductType.ClassTests,
     vendor: overrides.vendor ?? 'vendor',
     tags: overrides.tags ?? ['tag1']
   }

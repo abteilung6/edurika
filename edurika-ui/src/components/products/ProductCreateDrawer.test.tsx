@@ -5,7 +5,7 @@ import api from 'api/base'
 import { createTestUtils } from 'utils/testUtils'
 import { mockAxiosErrorResponse, mockAxiosResponse } from 'utils/mocks/axios'
 import { ProductCreateDrawer } from './ProductCreateDrawer'
-import { Product } from 'generated-api'
+import { Product, ProductType } from 'generated-api'
 import { mockAnimationsApi } from 'jsdom-testing-mocks'
 import { createMockProduct } from 'utils/mocks/api'
 
@@ -33,6 +33,7 @@ describe(ProductCreateDrawer.name, () => {
   const setFormFields = async () => {
     await user.type(screen.getByLabelText('Titel'), 'Mein title')
     await user.type(screen.getByLabelText('Beschreibung'), 'My description')
+    await user.click(screen.getByLabelText('Quiz'))
   }
 
   it('should submit form', async () => {
@@ -47,7 +48,7 @@ describe(ProductCreateDrawer.name, () => {
     expect(spyCreateProduct).toBeCalledWith({
       title: 'Mein title',
       description_html: 'My description',
-      product_type: 'product_type',
+      product_type: ProductType.Quiz,
       tags: ['tag'],
       vendor: 'vendor'
     })

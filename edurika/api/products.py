@@ -1,9 +1,12 @@
+from typing import cast
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from edurika import schemas
 from edurika.api.deps import get_shopify_operator
 from edurika.prj.shopify.errors import ShopifyApiError
 from edurika.prj.shopify.operator import ProductInput, ShopifyOperator
+from edurika.schemas.products import ProductType
 
 router = APIRouter(prefix="/products", tags=["products"])
 
@@ -31,7 +34,7 @@ def products_create(
     return schemas.Product(
         gid=shopify_product.id,
         title=shopify_product.title,
-        product_type=shopify_product.productType,
+        product_type=cast(ProductType, shopify_product.productType),  # TODO: validate product_type
         description_html=shopify_product.descriptionHtml,
         vendor=shopify_product.vendor,
         tags=shopify_product.tags,

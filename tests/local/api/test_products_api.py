@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from edurika.schemas.products import Product
+from edurika.schemas.products import Product, ProductType
 
 
 @pytest.fixture(name="sample_product")
@@ -9,7 +9,7 @@ def fixture_sample_product() -> Product:
     return Product(
         gid="gid://shopify/Product/1",
         title="product-title",
-        product_type="product-type",
+        product_type=ProductType.poster,
         description_html="<b>description</b>",
         vendor="vendor",
         tags=["tag1", "tags"],

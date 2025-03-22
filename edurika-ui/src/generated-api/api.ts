@@ -56,10 +56,10 @@ export interface Product {
     'title': string;
     /**
      * 
-     * @type {string}
+     * @type {ProductType}
      * @memberof Product
      */
-    'product_type': string;
+    'product_type': ProductType;
     /**
      * 
      * @type {string}
@@ -79,6 +79,8 @@ export interface Product {
      */
     'tags': Array<string>;
 }
+
+
 /**
  * 
  * @export
@@ -93,10 +95,10 @@ export interface ProductCreateRequest {
     'title': string;
     /**
      * 
-     * @type {string}
+     * @type {ProductType}
      * @memberof ProductCreateRequest
      */
-    'product_type': string;
+    'product_type': ProductType;
     /**
      * 
      * @type {string}
@@ -116,6 +118,27 @@ export interface ProductCreateRequest {
      */
     'tags': Array<string>;
 }
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const ProductType = {
+    Poster: 'poster',
+    Worksheets: 'worksheets',
+    Games: 'games',
+    ColoringPages: 'coloring_pages',
+    FactSheets: 'fact_sheets',
+    ClassTests: 'class_tests',
+    Quiz: 'quiz'
+} as const;
+
+export type ProductType = typeof ProductType[keyof typeof ProductType];
+
+
 /**
  * 
  * @export
