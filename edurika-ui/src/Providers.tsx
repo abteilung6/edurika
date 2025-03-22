@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import AdminLayout from 'components/AdminLayout'
 import AuthLayout from 'components/AuthLayout'
 import MainLayout from 'components/MainLayout'
 import { AuthenticationProvider } from 'hooks/useAuthentication'
@@ -49,12 +50,18 @@ const route: RouteObject = {
           element: <StartPage />
         },
         {
-          path: '/products/create',
-          element: <ProductCreatePage />
-        },
-        {
           path: '/products',
           element: <ProductListPage />
+        }
+      ]
+    },
+    {
+      element: <AdminLayout />,
+      path: 'admin',
+      children: [
+        {
+          path: 'products',
+          element: <ProductCreatePage />
         }
       ]
     }
