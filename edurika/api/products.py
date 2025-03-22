@@ -2,8 +2,8 @@ from typing import cast
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from edurika import schemas
-from edurika.api.deps import get_shopify_operator
+from edurika import models, schemas
+from edurika.api.deps import get_current_user, get_shopify_operator
 from edurika.prj.shopify.errors import ShopifyApiError
 from edurika.prj.shopify.operator import ProductInput, ShopifyOperator
 from edurika.schemas.products import ProductType
@@ -14,6 +14,7 @@ router = APIRouter(prefix="/products", tags=["products"])
 @router.post("/", response_model=schemas.Product)
 def products_create(
     request: schemas.ProductCreateRequest,
+    current_user: models.User = Depends(get_current_user),
     shopify_operator: ShopifyOperator = Depends(get_shopify_operator),
 ) -> schemas.Product:
     try:
@@ -22,7 +23,7 @@ def products_create(
                 title=request.title,
                 productType=request.product_type,
                 descriptionHtml=request.description_html,
-                vendor=request.vendor,
+                vendor=str(current_user.public_name),
                 tags=request.tags,
             )
         )

@@ -107,12 +107,6 @@ export interface ProductCreateRequest {
     'description_html': string;
     /**
      * 
-     * @type {string}
-     * @memberof ProductCreateRequest
-     */
-    'vendor': string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof ProductCreateRequest
      */
@@ -329,6 +323,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
 
 
     

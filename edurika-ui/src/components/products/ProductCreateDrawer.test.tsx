@@ -49,8 +49,7 @@ describe(ProductCreateDrawer.name, () => {
       title: 'Mein title',
       description_html: 'My description',
       product_type: ProductType.Quiz,
-      tags: ['tag'],
-      vendor: 'vendor'
+      tags: ['tag']
     })
     expect(spySetOpen).toBeCalledWith(false)
   })

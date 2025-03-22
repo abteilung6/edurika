@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ProductCreateDrawer } from 'components/products/ProductCreateDrawer'
 import { Button } from 'components/Button'
 
-const ProductCreatePage: React.FC = () => {
+const AdminProductPage: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false)
   return (
     <div>
@@ -12,4 +12,4 @@ const ProductCreatePage: React.FC = () => {
   )
 }
 
-export default ProductCreatePage
+export default AdminProductPage
