@@ -9,6 +9,8 @@ import { TextArea } from 'components/TextArea'
 import { Button } from 'components/Button'
 import { noop } from 'utils/common'
 import { Alert } from 'components/Alert'
+import { ProductType } from 'generated-api'
+import { formatProductTypeLabel } from 'utils/products'
 
 export interface ProductCreateDrawerProps {
   open: boolean
@@ -17,7 +19,10 @@ export interface ProductCreateDrawerProps {
 
 const schema = Yup.object({
   title: Yup.string().required('Title is required'),
-  description: Yup.string().required('Description is required')
+  description: Yup.string().required('Description is required'),
+  product_type: Yup.mixed<ProductType>()
+    .oneOf(Object.values(ProductType), 'Invalid product type')
+    .required('Product type is required')
 })
 
 export const ProductCreateDrawer: React.FC<ProductCreateDrawerProps> = ({
@@ -28,15 +33,16 @@ export const ProductCreateDrawer: React.FC<ProductCreateDrawerProps> = ({
   const formik = useFormik({
     initialValues: {
       title: '',
-      description: ''
+      description: '',
+      product_type: ''
     },
     validationSchema: schema,
-    onSubmit: ({ title, description }) => {
+    onSubmit: async ({ title, description, product_type }) => {
       return productCreateMutation
         .mutateAsync({
           title,
           description_html: description,
-          product_type: 'product_type',
+          product_type: product_type as ProductType,
           vendor: 'vendor',
           tags: ['tag']
         })
@@ -44,6 +50,7 @@ export const ProductCreateDrawer: React.FC<ProductCreateDrawerProps> = ({
         .catch(noop)
     }
   })
+
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <div className="fixed inset-0" />
@@ -85,7 +92,6 @@ export const ProductCreateDrawer: React.FC<ProductCreateDrawerProps> = ({
                     </div>
                   </div>
                   <div className="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0">
-                    ^
                     {productCreateMutation.isError && (
                       <div className="mb-4">
                         <Alert
@@ -146,6 +152,50 @@ export const ProductCreateDrawer: React.FC<ProductCreateDrawerProps> = ({
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                         />
+                      </div>
+                    </div>
+                    <div className="space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+                      <div>
+                        <label
+                          htmlFor="description"
+                          className="block text-sm/6 font-medium text-gray-900 sm:mt-1.5"
+                        >
+                          Materialtyp
+                        </label>
+                      </div>
+                      <div className="sm:col-span-2">
+                        <p className="text-sm/6 text-gray-600">
+                          Wähle ein Materialtype aus.
+                        </p>
+                        <div className="mt-6 space-y-6">
+                          <fieldset>
+                            {Object.values(ProductType).map(
+                              (productType, index) => (
+                                <div
+                                  key={index}
+                                  className="flex items-center gap-x-3"
+                                >
+                                  <input
+                                    id={productType}
+                                    name="product_type"
+                                    type="radio"
+                                    value={productType}
+                                    aria-valuetext={productType}
+                                    className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                  />
+                                  <label
+                                    htmlFor={productType}
+                                    className="block text-sm/6 font-medium text-gray-900"
+                                  >
+                                    {formatProductTypeLabel(productType)}
+                                  </label>
+                                </div>
+                              )
+                            )}
+                          </fieldset>
+                        </div>
                       </div>
                     </div>
                   </div>
