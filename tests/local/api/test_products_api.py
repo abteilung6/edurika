@@ -1,6 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from edurika import models
 from edurika.schemas.products import Product, ProductType
 
 
@@ -16,7 +17,7 @@ def fixture_sample_product() -> Product:
     )
 
 
-def test_products_create(auth_client: TestClient, sample_product: Product) -> None:
+def test_products_create(auth_client: TestClient, auth_user: models.User, sample_product: Product) -> None:
     request = sample_product.model_dump()
     response = auth_client.post("/products", json=request)
     assert response.status_code == 200
@@ -26,6 +27,6 @@ def test_products_create(auth_client: TestClient, sample_product: Product) -> No
         "title": sample_product.title,
         "product_type": sample_product.product_type,
         "description_html": sample_product.description_html,
-        "vendor": sample_product.vendor,
+        "vendor": auth_user.public_name,
         "tags": sample_product.tags,
     }

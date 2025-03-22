@@ -17,7 +17,6 @@ class ProductCreateRequest(BaseModel):
     title: str
     product_type: ProductType  # noqa: N815
     description_html: str  # noqa: N815
-    vendor: str
     tags: list[str]
 
 
