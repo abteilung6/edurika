@@ -60,7 +60,7 @@ const route: RouteObject = {
       path: 'admin',
       children: [
         {
-          path: '/',
+          index: true,
           element: <AdminProductPage />
         },
         {
