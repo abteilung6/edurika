@@ -342,6 +342,40 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Products List
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsListProductsGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/products/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -365,6 +399,18 @@ export const ProductsApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsCreateProductsPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @summary Products List
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsListProductsGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Product>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsListProductsGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsListProductsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -385,6 +431,15 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
         productsCreateProductsPost(productCreateRequest: ProductCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Product> {
             return localVarFp.productsCreateProductsPost(productCreateRequest, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary Products List
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsListProductsGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<Product>> {
+            return localVarFp.productsListProductsGet(options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -403,6 +458,15 @@ export interface ProductsApiInterface {
      * @memberof ProductsApiInterface
      */
     productsCreateProductsPost(productCreateRequest: ProductCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Product>;
+
+    /**
+     * 
+     * @summary Products List
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApiInterface
+     */
+    productsListProductsGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<Product>>;
 
 }
 
@@ -423,6 +487,17 @@ export class ProductsApi extends BaseAPI implements ProductsApiInterface {
      */
     public productsCreateProductsPost(productCreateRequest: ProductCreateRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsCreateProductsPost(productCreateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Products List
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsListProductsGet(options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsListProductsGet(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
