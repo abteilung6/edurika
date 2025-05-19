@@ -24,6 +24,19 @@ export const useProductCreate = (
   })
 }
 
+export const useShopifyAdminProductListQuery = (
+  options?: Omit<UseQueryOptions<Product[]>, 'queryKey' | 'queryFn'>
+) => {
+  return useQuery<Product[], Error>({
+    ...options,
+    queryKey: ['admin_products'],
+    queryFn: async () => {
+      const { data } = await api.productsApi.productsListProductsGet()
+      return data
+    }
+  })
+}
+
 export const useShopifyProductListQuery = (
   options?: Omit<UseQueryOptions<ShopifyProduct[]>, 'queryKey' | 'queryFn'>
 ) => {

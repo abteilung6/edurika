@@ -1,20 +1,20 @@
 import json
 from dataclasses import asdict, dataclass
 from functools import cached_property
-from typing import Any, Final, TypeAlias, TypeVar
+from typing import Final, TypeVar
 
 import requests
 from pydantic import BaseModel
 
+from edurika.prj.json.types import JsonObject
 from edurika.prj.shopify.errors import ServerError, ShopifyApiError, TooManyRequestsError
 from edurika.prj.shopify.mutations import ProductCreateMutationResponse, product_create_mutation
 from edurika.prj.shopify.operator import ShopifyOperator
+from edurika.prj.shopify.queries import ProductConnection, ProductsEdge, product_list_by_vendor_query
 from edurika.prj.shopify.types import ProductInput, UserError
 
 T = TypeVar("T", bound=BaseModel)
 
-
-JsonObject: TypeAlias = dict[str, Any]
 
 DEFAULT_SHOPIFY_API_VERSION: Final[str] = "2025-01"
 
@@ -28,9 +28,14 @@ class GraphQLShopifyOperator(ShopifyOperator):
     def product_create(self, *, input: ProductInput) -> ProductCreateMutationResponse:
         payload = {"query": product_create_mutation, "variables": {"input": asdict(input)}}
         body = self.execute_request(payload=payload)
-        return self.unmarshall_entity(
+        return self.unmarshall_mutation_response(
             body, model=ProductCreateMutationResponse, mutation_name="productCreate", entity_name="product"
         )
+
+    def product_search(self, vendor: str) -> ProductsEdge[ProductConnection]:
+        payload = {"query": product_list_by_vendor_query, "variables": {"vendor": vendor}}
+        body = self.execute_request(payload=payload)
+        return self.unmarshall_query_response(body, model=ProductsEdge[ProductConnection], entity_name="products")  # type: ignore[arg-type]
 
     def execute_request(self, payload: JsonObject) -> JsonObject:
         response = requests.post(self.shop_url, headers=self.headers, data=json.dumps(payload))
@@ -61,6 +66,11 @@ class GraphQLShopifyOperator(ShopifyOperator):
         return {"Content-Type": "application/json", "X-Shopify-Access-Token": self.access_token}
 
     @staticmethod
-    def unmarshall_entity(body: JsonObject, *, model: type[T], mutation_name: str, entity_name: str) -> T:
+    def unmarshall_mutation_response(body: JsonObject, *, model: type[T], mutation_name: str, entity_name: str) -> T:
         entity_data = body.get("data", {}).get(mutation_name, {}).get(entity_name, {})
         return model.model_validate(entity_data)
+
+    @staticmethod
+    def unmarshall_query_response(body: JsonObject, *, model: type[T], entity_name: str) -> ProductsEdge[T]:
+        entity_data = body.get("data", {}).get(entity_name, {})
+        return model.model_validate(entity_data)  # type: ignore[return-value]

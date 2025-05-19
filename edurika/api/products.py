@@ -6,6 +6,7 @@ from edurika import models, schemas
 from edurika.api.deps import get_current_user, get_shopify_operator
 from edurika.prj.shopify.errors import ShopifyApiError
 from edurika.prj.shopify.operator import ProductInput, ShopifyOperator
+from edurika.prj.shopify.queries import ProductConnection, ProductsEdge
 from edurika.schemas.products import ProductType
 
 router = APIRouter(prefix="/products", tags=["products"])
@@ -40,3 +41,27 @@ def products_create(
         vendor=shopify_product.vendor,
         tags=shopify_product.tags,
     )
+
+
+@router.get("/", response_model=list[schemas.Product])
+def products_list(
+    current_user: models.User = Depends(get_current_user),
+    shopify_operator: ShopifyOperator = Depends(get_shopify_operator),
+) -> list[schemas.Product]:
+    product_edge = shopify_operator.product_search(vendor=str(current_user.public_name))
+    return format_product_list(product_edge)
+
+
+def format_product_list(product_edge: ProductsEdge[ProductConnection]) -> list[schemas.Product]:
+    edges = product_edge.edges
+    return [
+        schemas.Product(
+            gid=edge.node.id,
+            title=edge.node.title,
+            product_type=cast(ProductType, edge.node.productType),
+            description_html=edge.node.descriptionHtml,
+            vendor=edge.node.vendor,
+            tags=edge.node.tags,
+        )
+        for edge in edges
+    ]
